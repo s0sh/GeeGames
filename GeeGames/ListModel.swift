@@ -25,16 +25,6 @@ struct Games: Codable {
     let description: String
     let filters: Filters
     let nofollowCollections: [String]
-
-    enum CodingKeys: String, CodingKey {
-        case count, next, previous, results
-        case seoTitle = "seo_title"
-        case seoDescription = "seo_description"
-        case seoKeywords = "seo_keywords"
-        case seoH1 = "seo_h1"
-        case noindex, nofollow, description, filters
-        case nofollowCollections = "nofollow_collections"
-    }
 }
 
 // MARK: - Filters
@@ -101,7 +91,7 @@ struct EsrbRating: Codable {
 }
 
 // MARK: - Genre
-struct Genre: Codable {
+struct Genre: Identifiable, Codable {
     let id: Int
     let name, slug: String
     let gamesCount: Int
@@ -132,7 +122,8 @@ struct ParentPlatform: Codable {
 }
 
 // MARK: - PlatformElement
-struct PlatformElement: Codable {
+struct PlatformElement: Identifiable ,Codable {
+    let id = UUID()
     let platform: PlatformPlatform
     let releasedAt: String
     let requirementsEn, requirementsRu: Requirements?

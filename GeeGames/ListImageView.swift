@@ -9,6 +9,7 @@ import SwiftUI
 
 fileprivate
 class ImageViewModel: ObservableObject {
+    
     @Published var image: UIImage?
 
     private var imageCache: NSCache<NSString, UIImage>?
@@ -22,6 +23,7 @@ class ImageViewModel: ObservableObject {
 
         if let imageFromCache = getImageFromCache(from: urlString) {
             self.image = imageFromCache
+            self.image
             return
         }
 
@@ -68,5 +70,7 @@ struct ImageView: View {
     
     var body: some View {
         Image(uiImage: imageViewModel.image ?? UIImage())
+            .resizable()
+            .scaledToFill()
     }
 }

@@ -1,2 +1,0 @@
-# GeeGames
-iMakeBetter. Games listing
