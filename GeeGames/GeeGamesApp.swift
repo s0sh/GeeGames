@@ -11,7 +11,10 @@ import SwiftUI
 struct GeeGamesApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ZStack {
+                HomeView()
+                MenuView()
+            }
         }
     }
 }
