@@ -18,7 +18,7 @@ import Foundation
 struct Games: Codable {
     let count: Int
     let next: String
-    let previous: JSONNull?
+    let previous: String?
     let results: [Game]
     let seoTitle, seoDescription, seoKeywords, seoH1: String
     let noindex, nofollow: Bool
@@ -59,9 +59,7 @@ struct Game: Identifiable, Codable {
     let ratings: [Rating]
     let ratingsCount, reviewsTextCount, added: Int
     let addedByStatus: AddedByStatus
-    let metacritic, playtime, suggestionsCount: Int
     let updated: String
-    let userGame: JSONNull?
     let reviewsCount: Int
     let saturatedColor, dominantColor: Color
     let platforms: [PlatformElement]
@@ -70,7 +68,6 @@ struct Game: Identifiable, Codable {
     let stores: [Store]
     let clip: JSONNull?
     let tags: [Genre]
-    let esrbRating: EsrbRating
     let shortScreenshots: [ShortScreenshot]
 }
 
@@ -133,7 +130,7 @@ struct PlatformElement: Identifiable ,Codable {
 struct PlatformPlatform: Codable {
     let id: Int
     let name, slug: String
-    let image, yearEnd: JSONNull?
+    let image, yearEnd: String?
     let yearStart: Int?
     let gamesCount: Int
     let imageBackground: String

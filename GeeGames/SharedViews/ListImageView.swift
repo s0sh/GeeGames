@@ -23,7 +23,6 @@ class ImageViewModel: ObservableObject {
 
         if let imageFromCache = getImageFromCache(from: urlString) {
             self.image = imageFromCache
-            self.image
             return
         }
 
@@ -71,6 +70,6 @@ struct ImageView: View {
     var body: some View {
         Image(uiImage: imageViewModel.image ?? UIImage())
             .resizable()
-            .scaledToFill()
+            .aspectRatio(contentMode: .fit)
     }
 }

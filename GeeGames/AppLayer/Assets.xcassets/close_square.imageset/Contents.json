@@ -1,6 +1,7 @@
 {
-  "colors" : [
+  "images" : [
     {
+      "filename" : "close_square.pdf",
       "idiom" : "universal"
     }
   ],

@@ -11,7 +11,6 @@ enum MenuItems: Int, CaseIterable{
     case home = 0
     case task
     case add
-    case chart
     case profile
     
     var title: String{
@@ -22,8 +21,6 @@ enum MenuItems: Int, CaseIterable{
             return "Task"
         case .add:
             return "Add"
-        case .chart:
-            return "Chart"
         case .profile:
             return "Profile"
         }
@@ -32,19 +29,16 @@ enum MenuItems: Int, CaseIterable{
     var iconName: String{
         switch self {
         case .home:
-            return "menu_home"
+            return "house"
         case .task:
-            return "menu_task"
+            return "backword"
         case .add:
-            return "menu_add_task"
-        case .chart:
-            return "menu_chart"
+            return "forward"
         case .profile:
-            return "menu_profile"
+            return "profile"
         }
     }
 }
-
 
 struct MenuView: View {
     
@@ -53,16 +47,14 @@ struct MenuView: View {
     var body: some View {
             ZStack(alignment: .bottom){
                 TabView(selection: $selectedTab) {
-                    HomeView()
+                    HomeView(isPrev: nil)
                         .tag(0)
-                    HomeView()
+                    HomeView(isPrev: true)
                         .tag(1)
-                    HomeView()
+                    HomeView(isPrev: false)
                         .tag(2)
                     HomeView()
                         .tag(3)
-                    HomeView()
-                        .tag(4)
                 }
                 ZStack{
                     HStack{
@@ -74,7 +66,7 @@ struct MenuView: View {
                                 
                                 CustomTabItem(imageName: item.iconName,
                                               title: item.title,
-                                              isActive: (selectedTab == item.rawValue), isAdd: item.title == "Add" ? true : false)
+                                              isActive: (selectedTab == item.rawValue), isAdd: false)
                             }
                         }
                     }
