@@ -15,8 +15,11 @@ struct HomeView: View {
     
     @StateObject private var viewModel = GamesListViewModel()
     
+    @State var searchText: String = ""
+    
     var body: some View {
         
+        // MARK: Emty View
         if dataDidLoad == false {
             Text("Loading...").font(.system(size: 40, weight: .bold))
                 .foregroundColor(.red)
@@ -27,24 +30,30 @@ struct HomeView: View {
                 }
                 
         } else {
+          
             NavigationView {
                 VStack {
+                    SearchView().frame(width: .infinity, height: 40)
                     List {
                         ForEach(viewModel.gamesInfo) { item in
                             VStack(alignment: .center, spacing: 20) {
                                 
-                                Spacer()
+                             //   Spacer()
                                 
+                                // MARK: - Game Name
                                 Text("\(item.name)")
                                     .font(.system(size: 18, weight: .semibold))
                                     .shadow(color: .gray, radius: 5).listRowSeparator(.hidden)
                                 
+                                // MARK: - Poster
                                 NavigationLink {
                                     GameDetailsView(game: item)
                                 } label: {
                                     ImageView(urlString: item.backgroundImage)
+                                        .frame(width: 320, height: 300)
                                 }
                                 
+                                // MARK: - Rating
                                 RatingView(rating: Int(item.rating)).listRowSeparator(.hidden)
                                 
                                 Spacer()
@@ -56,9 +65,10 @@ struct HomeView: View {
                         }
                     }.listRowBackground(SwiftUI.Color.clear)
                     
+                    // MARK: - Networking / Business
                 }.navigationTitle("Top Games [\(viewModel.data.count)]")
                     .task {
-                       // if dataDidLoad == false {
+                        if dataDidLoad == true && isPrev != nil {
                             if isPrev == false {
                                 await viewModel.loadNextPage()
                                 dataDidLoad = true
@@ -69,7 +79,7 @@ struct HomeView: View {
                                 await viewModel.loadGames()
                                 dataDidLoad = true
                             }
-                       // }
+                        }
                     }
             }
         }

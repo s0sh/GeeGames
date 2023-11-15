@@ -70,6 +70,6 @@ struct ImageView: View {
     var body: some View {
         Image(uiImage: imageViewModel.image ?? UIImage())
             .resizable()
-            .aspectRatio(contentMode: .fit)
+            .aspectRatio(contentMode: .fill)
     }
 }

@@ -42,20 +42,23 @@ struct GameDetailsView: View {
                                 .font(.system(size: 18, weight: .semibold))
                                 .foregroundColor(.black)
                                 .shadow(color: Settings.shadowColor, radius: Settings.shadowRadius, x: 2, y: 2)
-                            
                             HStack {
-                                ForEach(game.genres) {
-                                    
-                                    Capsule()
-                                        .fill(SwiftUI.Color.gray.opacity(0.8))
-                                        .overlay(
-                                            Text("\($0.name)")
-                                                .font(.system(size: 18, weight: .semibold))
-                                                .foregroundColor(.white)
-                                                .shadow(color: Settings.shadowColor, radius: Settings.shadowRadius)
-                                        )
+                                ScrollView(.horizontal) {
+                                    HStack(spacing: 15) {
+                                        ForEach(game.genres) {
+                                            Capsule()
+                                                .fill(SwiftUI.Color("AccentColor").opacity(0.8))
+                                                .frame(width: 110, height: 30)
+                                                .overlay(
+                                                    Text("\($0.name)")
+                                                        .font(.system(size: 15, weight: .semibold))
+                                                        .foregroundColor(.white)
+                                                        .shadow(color: Settings.shadowColor, radius: Settings.shadowRadius)
+                                                )
+                                        }
+                                        
+                                    }
                                 }
-                                
                             }
                         }
                         
@@ -65,8 +68,10 @@ struct GameDetailsView: View {
                                     .font(.system(size: 18, weight: .semibold))
                                     .foregroundColor(.black)
                                     .shadow(color: .black, radius: Settings.shadowRadius, x: 1, y: 1)
-                                    .padding(20)
+                                    .padding()
+                                    
                                 TestHTMLText(html: description)
+                                    
                             }
                         }
                         
@@ -78,6 +83,7 @@ struct GameDetailsView: View {
                                     .shadow(color: Settings.shadowColor, radius: Settings.shadowRadius, x: 1, y: 1)
                                     .padding(20)
                                 TestHTMLText(html: req.minimum)
+                                    
                             }
                         }
                     }

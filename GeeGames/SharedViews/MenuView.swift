@@ -11,6 +11,7 @@ enum MenuItems: Int, CaseIterable{
     case home = 0
     case task
     case add
+    case settings
     case profile
     
     var title: String{
@@ -21,6 +22,8 @@ enum MenuItems: Int, CaseIterable{
             return "Task"
         case .add:
             return "Add"
+        case .settings:
+            return "Settings"
         case .profile:
             return "Profile"
         }
@@ -34,6 +37,8 @@ enum MenuItems: Int, CaseIterable{
             return "backword"
         case .add:
             return "forward"
+        case .settings:
+            return "settings"
         case .profile:
             return "profile"
         }
@@ -53,8 +58,10 @@ struct MenuView: View {
                         .tag(1)
                     HomeView(isPrev: false)
                         .tag(2)
-                    HomeView()
+                    SettingsView()
                         .tag(3)
+                    ProfileView()
+                        .tag(4)
                 }
                 ZStack{
                     HStack{
