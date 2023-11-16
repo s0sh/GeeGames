@@ -10,7 +10,6 @@
 		B53635642B04C1200064713E /* RatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53635632B04C1200064713E /* RatingView.swift */; };
 		B53635692B0515260064713E /* GameDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53635682B0515260064713E /* GameDetailModel.swift */; };
 		B536356B2B0518C20064713E /* GameDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B536356A2B0518C20064713E /* GameDetailViewModel.swift */; };
-		B53635722B056E8C0064713E /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53635712B056E8C0064713E /* SearchView.swift */; };
 		B53635742B0571790064713E /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53635732B0571790064713E /* SettingsView.swift */; };
 		B53635762B05736D0064713E /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53635752B05736D0064713E /* ProfileView.swift */; };
 		B5930E9D2B029B6100265CBE /* GeeGamesApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5930E9C2B029B6100265CBE /* GeeGamesApp.swift */; };
@@ -29,7 +28,6 @@
 		B53635672B05035A0064713E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B53635682B0515260064713E /* GameDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailModel.swift; sourceTree = "<group>"; };
 		B536356A2B0518C20064713E /* GameDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetailViewModel.swift; sourceTree = "<group>"; };
-		B53635712B056E8C0064713E /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		B53635732B0571790064713E /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		B53635752B05736D0064713E /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		B5930E992B029B6100265CBE /* GeeGames.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GeeGames.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,7 +59,6 @@
 				B5930EB02B03A76100265CBE /* MenuView.swift */,
 				B5930EAE2B038EF600265CBE /* ListImageView.swift */,
 				B53635632B04C1200064713E /* RatingView.swift */,
-				B53635712B056E8C0064713E /* SearchView.swift */,
 			);
 			path = SharedViews;
 			sourceTree = "<group>";
@@ -224,7 +221,6 @@
 				B5930E9F2B029B6100265CBE /* HomeView.swift in Sources */,
 				B53635742B0571790064713E /* SettingsView.swift in Sources */,
 				B5930E9D2B029B6100265CBE /* GeeGamesApp.swift in Sources */,
-				B53635722B056E8C0064713E /* SearchView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
