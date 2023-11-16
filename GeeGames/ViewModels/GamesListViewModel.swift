@@ -24,6 +24,9 @@ class OperationslData {
 class GamesListViewModel: ObservableObject {
     
     @Published var gamesInfo: [Game] = []
+    @State var tmpInfo: [Game] = []
+    @Published var gamesInfoFiltered: [Game] = []
+    
     let data: OperationslData = OperationslData.shared
     var count: Int = 0
     
@@ -32,9 +35,15 @@ class GamesListViewModel: ObservableObject {
         do {
             let games = try await loadItems(by: data.gamesListUrlString)
             gamesInfo = games
+            gamesInfoFiltered = games
+            tmpInfo = games
         } catch {
             print("Could load photos: \(error)")
         }
+    }
+    
+    func search(text: String) {
+        
     }
     
     func loadNextPage() async {

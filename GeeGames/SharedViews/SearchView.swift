@@ -23,7 +23,7 @@ struct SearchView: View {
                 
                 Image("search")
                 
-                TextField("Enter task name", text: $searchText)
+                TextField("Enter game name", text: $searchText)
                 
                 Button(action: {
                     searchText = ""
@@ -33,7 +33,7 @@ struct SearchView: View {
                 
                 Spacer(minLength: 5)
             }
-            .frame(height: 50)
+            .frame(height: 40)
             .background(SwiftUI.Color("main"))
             .cornerRadius(15)
             

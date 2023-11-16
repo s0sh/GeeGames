@@ -17,6 +17,8 @@ struct HomeView: View {
     
     @State var searchText: String = ""
     
+    @State var filteredObjects: [Game] = []
+    
     var body: some View {
         
         // MARK: Emty View
@@ -26,19 +28,19 @@ struct HomeView: View {
                 .shadow(color: .red, radius: 10)
                 .task {
                     await viewModel.loadGames()
+                    filteredObjects = viewModel.gamesInfo
                     dataDidLoad = true
                 }
                 
         } else {
           
             NavigationView {
+                
                 VStack {
-                    SearchView().frame(width: .infinity, height: 40)
                     List {
-                        ForEach(viewModel.gamesInfo) { item in
+                        ForEach(filteredObjects) { item in
+                            
                             VStack(alignment: .center, spacing: 20) {
-                                
-                             //   Spacer()
                                 
                                 // MARK: - Game Name
                                 Text("\(item.name)")
@@ -51,6 +53,7 @@ struct HomeView: View {
                                 } label: {
                                     ImageView(urlString: item.backgroundImage)
                                         .frame(width: 320, height: 300)
+                                        
                                 }
                                 
                                 // MARK: - Rating
@@ -63,24 +66,41 @@ struct HomeView: View {
                                 .background(SwiftUI.Color.white)
                             
                         }
-                    }.listRowBackground(SwiftUI.Color.clear)
+                    }
+                   // .frame(minWidth: .infinity)
+                   // .edgesIgnoringSafeArea(.all)
+                    .listStyle(GroupedListStyle())
+                    .listRowBackground(SwiftUI.Color.clear)
                     
                     // MARK: - Networking / Business
-                }.navigationTitle("Top Games [\(viewModel.data.count)]")
+                }
+                .navigationTitle("Top Games [\(viewModel.data.count)]")
                     .task {
                         if dataDidLoad == true && isPrev != nil {
                             if isPrev == false {
-                                await viewModel.loadNextPage()
+                                 await viewModel.loadNextPage()
+                                filteredObjects = viewModel.gamesInfo
                                 dataDidLoad = true
                             } else if isPrev == true {
                                 await viewModel.loadPrevPage()
+                                filteredObjects = viewModel.gamesInfo
                                 dataDidLoad = true
                             } else {
                                 await viewModel.loadGames()
+                                filteredObjects = viewModel.gamesInfo
                                 dataDidLoad = true
                             }
                         }
                     }
+            }.searchable(text: $searchText,
+                         placement: .automatic,
+                         prompt: "Search games...")
+            .onChange(of: searchText) { searchText in
+                if !searchText.isEmpty {
+                    filteredObjects = viewModel.gamesInfoFiltered.filter { $0.name.contains(searchText) }
+                } else {
+                    filteredObjects = viewModel.gamesInfo
+                }
             }
         }
     }

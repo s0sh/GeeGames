@@ -125,11 +125,11 @@
 			isa = PBXGroup;
 			children = (
 				B536356F2B0552BC0064713E /* AppLayer */,
+				B536356C2B05525A0064713E /* SharedViews */,
 				B53635702B05531C0064713E /* Screens */,
-				B5930EA22B029B6200265CBE /* Preview Content */,
 				B536356D2B0552780064713E /* Models */,
 				B536356E2B0552900064713E /* ViewModels */,
-				B536356C2B05525A0064713E /* SharedViews */,
+				B5930EA22B029B6200265CBE /* Preview Content */,
 			);
 			path = GeeGames;
 			sourceTree = "<group>";
