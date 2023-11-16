@@ -15,66 +15,80 @@ struct HomeView: View {
     
     @StateObject private var viewModel = GamesListViewModel()
     
-    @State var searchText: String = ""
+    @State private var searchText: String = ""
     
-    @State var filteredObjects: [Game] = []
+    @State private var filteredObjects: [Game] = []
     
     var body: some View {
-        
+       
         // MARK: Emty View
         if dataDidLoad == false {
-            Text("Loading...").font(.system(size: 40, weight: .bold))
-                .foregroundColor(.red)
-                .shadow(color: .red, radius: 10)
-                .task {
-                    await viewModel.loadGames()
-                    filteredObjects = viewModel.gamesInfo
-                    dataDidLoad = true
-                }
+            VStack {
+                ProgressView {
+                    Text("Loading...").font(.system(size: 40, weight: .bold))
+                        .foregroundColor(.red)
+                        .shadow(color: .red, radius: 10)
+                        .task {
+                            await viewModel.loadGames()
+                            filteredObjects = viewModel.gamesInfo
+                            dataDidLoad = true
+                        }
+                }.tint(.red)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(SwiftUI.Color("AccentColor"))
                 
         } else {
           
             NavigationView {
-                
                 VStack {
                     List {
                         ForEach(filteredObjects) { item in
-                            
                             VStack(alignment: .center, spacing: 20) {
+
                                 
                                 // MARK: - Game Name
-                                Text("\(item.name)")
-                                    .font(.system(size: 18, weight: .semibold))
-                                    .shadow(color: .gray, radius: 5).listRowSeparator(.hidden)
                                 
+                                Text("\(item.name)")
+                                    .font(.system(size: 22, weight: .black))
+                                    .foregroundColor(.red)
+                                    .shadow(color: .red, radius: 5).listRowSeparator(.hidden)
+                                    
                                 // MARK: - Poster
-                                NavigationLink {
-                                    GameDetailsView(game: item)
-                                } label: {
-                                    ImageView(urlString: item.backgroundImage)
-                                        .frame(width: 320, height: 300)
-                                        
+                              
+                                    NavigationLink {
+                                        GameDetailsView(game: item)
+                                    } label: {
+                                        ImageView(urlString: item.backgroundImage)
+                                            .frame(minHeight: 350)
+                                    }
+                              
+                                // MARK: - Rating
+                                HStack {
+                                    
+                                    RatingView(rating: Int(item.rating))
+                                        .listRowSeparator(.hidden)
+                                        .padding(.all)
+                                    
+                                    Text("Reviews: \(item.reviewsCount)")
+                                        .foregroundColor(.black)
+                                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                                    
+                                    
                                 }
                                 
-                                // MARK: - Rating
-                                RatingView(rating: Int(item.rating)).listRowSeparator(.hidden)
-                                
-                                Spacer()
+                               // Text("").frame(maxWidth: .infinity, maxHeight: 0.3).background(SwiftUI.Color.black)
                                 
                             }.listRowSeparator(.hidden)
-                            //.border(SwiftUI.Color.gray).cornerRadius(3.0)
-                                .background(SwiftUI.Color.white)
-                            
+                             .background(SwiftUI.Color.white)
                         }
                     }
                    // .frame(minWidth: .infinity)
                    // .edgesIgnoringSafeArea(.all)
                     .listStyle(GroupedListStyle())
                     .listRowBackground(SwiftUI.Color.clear)
-                    
-                    // MARK: - Networking / Business
                 }
-                .navigationTitle("Top Games [\(viewModel.data.count)]")
+                // MARK: - Networking / Business
                     .task {
                         if dataDidLoad == true && isPrev != nil {
                             if isPrev == false {
@@ -92,9 +106,12 @@ struct HomeView: View {
                             }
                         }
                     }
-            }.searchable(text: $searchText,
-                         placement: .automatic,
-                         prompt: "Search games...")
+                // MARK: - Navigation bar
+                    .navigationBarItems(leading: Text("Games")
+                                        .font(.system(size: 18, weight: .bold)))
+            }
+            // MARK: - Search bar
+            .searchable(text: $searchText, placement: .automatic, prompt: "Search games...")
             .onChange(of: searchText) { searchText in
                 if !searchText.isEmpty {
                     filteredObjects = viewModel.gamesInfoFiltered.filter { $0.name.contains(searchText) }
@@ -103,6 +120,11 @@ struct HomeView: View {
                 }
             }
         }
+            
+        if filteredObjects.count > 0 {
+            MenuView()
+        }
+    
     }
 }
 

@@ -10,11 +10,13 @@ import SwiftUI
 
 let authKey = "a716c6cb697f47dfa96b5013504dc76c"
 let mainUrl = "https://api.rawg.io/api/games"
+let mainGenresUrl = "https://api.rawg.io/api/genres"
 
 class OperationslData {
     static let shared = OperationslData()
     
     let gamesListUrlString = mainUrl + "?key=" + authKey
+    let genresListUrlString = mainGenresUrl + "?key=" + authKey
     var nextUrl = ""
     var prevUrl = ""
     var count = 0

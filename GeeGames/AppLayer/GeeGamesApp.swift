@@ -13,7 +13,6 @@ struct GeeGamesApp: App {
         WindowGroup {
             ZStack {
                 HomeView()
-                MenuView()
             }
         }
     }

@@ -12,6 +12,7 @@ import SwiftUI
 class GamesDetailViewModel: ObservableObject {
     
     @Published var gamesInfo: GameDetails?
+    
     @Published var id: Int = 0
     
     func loadInfo() async {

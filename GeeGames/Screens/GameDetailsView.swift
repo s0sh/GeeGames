@@ -14,49 +14,60 @@ struct Settings {
 
 struct GameDetailsView: View {
     
-    @State var game: Game
+    @State var game: Game?
     
     @StateObject private var viewModel = GamesDetailViewModel()
     
     @State var gamesInfo: GameDetails?
     
+    var isGenre = false
+    
+    var gameId = 0
+    
+    @Environment(\.managedObjectContext) var moc
+    @FetchRequest(sortDescriptors: []) private var favorites: FetchedResults<Favorites>
+    @State var dataManager: DataManager?
     
     var body: some View {
-      
-            VStack {
+        
                 ScrollView(.vertical) {
-                    HStack {
-                        Text(" \(game.name)")
-                            .font(.system(size: 30, weight: .bold))
-                            .foregroundColor(.red)
-                            .shadow(color: Settings.shadowColor, radius: Settings.shadowRadius, x: 2, y: 2)
-                            .padding(.top)
-                    }
-                    
-                    ImageView(urlString: game.backgroundImage)
-                    
+      
                     VStack {
-                        HStack {
-                            Spacer(minLength: 10)
-                            Text("Genres: ")
-                                .font(.system(size: 18, weight: .semibold))
-                                .foregroundColor(.black)
-                                .shadow(color: Settings.shadowColor, radius: Settings.shadowRadius, x: 2, y: 2)
+                        
+                        if let imageUrl = gamesInfo?.backgroundImage {
+                            ImageView(urlString: gamesInfo?.backgroundImage).frame(minHeight: 350)
+                        }
+                        
+                        Text(" \(gamesInfo?.name ?? "")")
+                           // .frame(maxWidth: .infinity)
+                            .font(.system(size: 30, weight: .black, design: .rounded))
+                            .foregroundColor(.red)
+                            .shadow(color: .red, radius: Settings.shadowRadius)
+                        
+                        if isGenre == false {
                             HStack {
-                                ScrollView(.horizontal) {
-                                    HStack(spacing: 15) {
-                                        ForEach(game.genres) {
-                                            Capsule()
-                                                .fill(SwiftUI.Color("AccentColor").opacity(0.8))
-                                                .frame(width: 110, height: 30)
-                                                .overlay(
-                                                    Text("\($0.name)")
-                                                        .font(.system(size: 15, weight: .semibold))
-                                                        .foregroundColor(.white)
-                                                        .shadow(color: Settings.shadowColor, radius: Settings.shadowRadius)
-                                                )
+                                
+                                Spacer(minLength: 10)
+                                Text("Genres: ")
+                                    .font(.system(size: 18, weight: .semibold))
+                                    .foregroundColor(.black)
+                                    .shadow(color: Settings.shadowColor, radius: Settings.shadowRadius, x: 2, y: 2)
+                                HStack {
+                                    ScrollView(.horizontal) {
+                                        HStack(spacing: 15) {
+                                            ForEach(game?.genres ?? []) {
+                                                Capsule()
+                                                    .fill(SwiftUI.Color("AccentColor").opacity(0.8))
+                                                    .frame(width: 110, height: 30)
+                                                    .overlay(
+                                                        Text("\($0.name)")
+                                                            .font(.system(size: 15, weight: .semibold))
+                                                            .foregroundColor(.white)
+                                                            .shadow(color: Settings.shadowColor, radius: Settings.shadowRadius)
+                                                    )
+                                            }
+                                            
                                         }
-                                        
                                     }
                                 }
                             }
@@ -69,34 +80,50 @@ struct GameDetailsView: View {
                                     .foregroundColor(.black)
                                     .shadow(color: .black, radius: Settings.shadowRadius, x: 1, y: 1)
                                     .padding()
-                                    
-                                TestHTMLText(html: description)
-                                    
+                                
+                                TestHTMLText(html: description).offset(x: 5)
+                                
                             }
                         }
-                        
-                        ForEach(game.platforms) {
-                            if let req = $0.requirementsEn {
-                                Text("Minimum requirements for: \($0.platform.name)")
-                                    .font(.system(size: 18, weight: .semibold))
-                                    .foregroundColor(.black)
-                                    .shadow(color: Settings.shadowColor, radius: Settings.shadowRadius, x: 1, y: 1)
-                                    .padding(20)
-                                TestHTMLText(html: req.minimum)
-                                    
+                        if isGenre == false {
+                            if let platforms = game?.platforms  {
+                                ForEach(platforms) {
+                                    if let req = $0.requirementsEn {
+                                        Text("Minimum requirements for: \($0.platform.name)")
+                                            .font(.system(size: 18, weight: .semibold))
+                                            .foregroundColor(.black)
+                                            .shadow(color: Settings.shadowColor, radius: Settings.shadowRadius, x: 1, y: 1)
+                                            .padding(20)
+                                        TestHTMLText(html: req.minimum)
+                                        
+                                    }
+                                }
                             }
                         }
                     }
-                    Spacer()
-                }
-                /* .background( Image("BG")
-                    .resizable()
-                    .scaledToFill()
-                    .edgesIgnoringSafeArea(.all)
-                    .blur(radius: 20)
-                */
-            }.task {
-                viewModel.id = game.id
+                    .navigationBarItems(trailing:
+                            Button(action: {
+                        
+                                dataManager = DataManager(moc: moc, favorites: favorites)
+                                
+                        
+                            }, label: {
+                                HStack {
+                                    Image(systemName: "heart")
+                                        .frame(width: 30, height: 30)
+                                        .font(.system(size: 20, weight: .medium))
+                                        .foregroundColor(.red)
+                                        .alignmentGuide(.bottom) {
+                                            $0[.top]
+                                        }
+                                    
+                                }
+                            })
+                    )
+                
+                }.offset(y: -30)
+            .task {
+                viewModel.id = gameId != 0 ? gameId : game!.id
                 await viewModel.loadInfo()
                 gamesInfo = viewModel.gamesInfo
             }

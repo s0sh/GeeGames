@@ -11,8 +11,8 @@ enum MenuItems: Int, CaseIterable{
     case home = 0
     case task
     case add
-    case settings
-    case profile
+    case favorite
+    case genres
     
     var title: String{
         switch self {
@@ -22,10 +22,10 @@ enum MenuItems: Int, CaseIterable{
             return "Task"
         case .add:
             return "Add"
-        case .settings:
-            return "Settings"
-        case .profile:
-            return "Profile"
+        case .favorite:
+            return "Favorites"
+        case .genres:
+            return "Genres"
         }
     }
     
@@ -37,10 +37,10 @@ enum MenuItems: Int, CaseIterable{
             return "backword"
         case .add:
             return "forward"
-        case .settings:
+        case .favorite:
+            return "heart"
+        case .genres:
             return "settings"
-        case .profile:
-            return "profile"
         }
     }
 }
@@ -50,6 +50,7 @@ struct MenuView: View {
     @State var selectedTab = 0
     
     var body: some View {
+        
             ZStack(alignment: .bottom){
                 TabView(selection: $selectedTab) {
                     HomeView(isPrev: nil)
@@ -58,9 +59,9 @@ struct MenuView: View {
                         .tag(1)
                     HomeView(isPrev: false)
                         .tag(2)
-                    SettingsView()
+                    FavoriteView()
                         .tag(3)
-                    ProfileView()
+                    GenresView()
                         .tag(4)
                 }
                 ZStack{
@@ -85,7 +86,7 @@ struct MenuView: View {
                 .padding(.horizontal, 26)
                 .shadow(radius: 25, x: 3, y: 3)
             }
-        }
+    }
 
 }
 

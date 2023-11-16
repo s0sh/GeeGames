@@ -68,8 +68,12 @@ struct ImageView: View {
     }
     
     var body: some View {
-        Image(uiImage: imageViewModel.image ?? UIImage())
-            .resizable()
-            .aspectRatio(contentMode: .fill)
+        ZStack {
+            ProgressView().tint(.red)
+            Image(uiImage: imageViewModel.image ?? UIImage())
+                .resizable()
+            //  .frame(minHeight: 350)
+                .aspectRatio(contentMode: .fill)
+        }
     }
 }
