@@ -10,6 +10,7 @@ import CoreData
 import SwiftUI
 
 class DataController: ObservableObject {
+    
     let conteiner = NSPersistentContainer(name: "GeeGames")
     
     init() {

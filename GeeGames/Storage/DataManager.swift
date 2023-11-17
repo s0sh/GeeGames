@@ -20,7 +20,7 @@ struct DataManager {
     }
     
     func add(imageData: Data, id: Int, name: String) {
-        var favorite = Favorites()
+        var favorite = Favorites(context: moc)
         favorite.image = imageData
         favorite.id = Int16(id)
         favorite.name = name

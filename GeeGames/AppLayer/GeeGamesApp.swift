@@ -9,10 +9,14 @@ import SwiftUI
 
 @main
 struct GeeGamesApp: App {
+    
+    @StateObject private var dataController = DataController()
+    
     var body: some Scene {
         WindowGroup {
             ZStack {
                 HomeView()
+                    .environment(\.managedObjectContext, dataController.conteiner.viewContext)
             }
         }
     }
