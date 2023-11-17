@@ -158,19 +158,11 @@
 		B5F5E7A52B06C3C300FD9C17 /* Storage */ = {
 			isa = PBXGroup;
 			children = (
-				B5F5E7B12B06C73B00FD9C17 /* Model */,
 				B5F5E7A62B06C3E400FD9C17 /* GeeGames.xcdatamodeld */,
 				B5F5E7A92B06C5E900FD9C17 /* DataController.swift */,
 				B5F5E7AB2B06C6A900FD9C17 /* DataManager.swift */,
 			);
 			path = Storage;
-			sourceTree = "<group>";
-		};
-		B5F5E7B12B06C73B00FD9C17 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

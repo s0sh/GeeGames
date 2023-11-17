@@ -19,17 +19,13 @@ struct DataManager {
         self.favorites = favorites
     }
     
-    func add(imageData: Data, id: Int, name: String) throws {
+    func add(imageData: Data, id: Int, name: String) {
         var favorite = Favorites()
         favorite.image = imageData
         favorite.id = Int16(id)
         favorite.name = name
-        do {
-            try moc.save()
-        } catch {
-            print(error)
-            throw error
-        }
+
+        try? moc.save()
     }
     
 }
