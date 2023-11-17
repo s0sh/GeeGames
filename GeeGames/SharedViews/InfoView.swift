@@ -71,4 +71,7 @@ struct MessageView: View {
             }
         }
     }
+
+#Preview {
+    InfoView()
 }
