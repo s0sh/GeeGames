@@ -51,9 +51,9 @@ struct MessageView: View {
                 .padding(.horizontal, 24)
                 //this transition dictates how the box appears and disappears.  The animation is described in .onChange below
                 .transition(.asymmetric(insertion: AnyTransition.opacity
-                                                .combined(with: AnyTransition.move(edge: .top)),
-                                            removal: AnyTransition.opacity
-                                                .combined(with: AnyTransition.move(edge: .top))))
+                    .combined(with: AnyTransition.move(edge: .top)),
+                                        removal: AnyTransition.opacity
+                    .combined(with: AnyTransition.move(edge: .top))))
             }
             Spacer()
             //check the @Binding text property for changes.  if one comes in, set it on our visibleErrorText property
@@ -71,7 +71,4 @@ struct MessageView: View {
             }
         }
     }
-
-#Preview {
-    InfoView()
 }
