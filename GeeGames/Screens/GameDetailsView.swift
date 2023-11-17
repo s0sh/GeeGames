@@ -14,6 +14,8 @@ struct Settings {
 
 struct GameDetailsView: View {
     
+    @State var messageText = ""
+    
     @State var game: Game?
     
     @StateObject private var viewModel = GamesDetailViewModel()
@@ -23,6 +25,8 @@ struct GameDetailsView: View {
     var isGenre = false
     
     var gameId = 0
+    
+    @State var showImage = false
     
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: []) private var favorites: FetchedResults<Favorites>
@@ -34,15 +38,27 @@ struct GameDetailsView: View {
             
             VStack {
                 
+                Text(" \(gamesInfo?.name ?? "")")
+                    .font(.system(size: 30, weight: .black, design: .rounded))
+                    .foregroundColor(.blue)
+                    .shadow(color: .blue, radius: Settings.shadowRadius)
+                
                 if let imageUrl = gamesInfo?.backgroundImage {
                     ImageView(urlString: gamesInfo?.backgroundImage).frame(minHeight: 350)
                 }
                 
-                Text(" \(gamesInfo?.name ?? "")")
-                // .frame(maxWidth: .infinity)
-                    .font(.system(size: 30, weight: .black, design: .rounded))
-                    .foregroundColor(.red)
-                    .shadow(color: .red, radius: Settings.shadowRadius)
+                if let game = game {
+                    if game.shortScreenshots.count > 0 {
+                        ScrollView(.horizontal) {
+                            HStack(spacing: 10) {
+                                ForEach(game.shortScreenshots) { item in
+                                    ImageView(urlString: item.image).frame(maxHeight: 70)
+                                }
+                            }
+                        }
+                        Spacer(minLength: 30)
+                    }
+                }
                 
                 if isGenre == false {
                     HStack {
@@ -50,7 +66,7 @@ struct GameDetailsView: View {
                         Spacer(minLength: 10)
                         Text("Genres: ")
                             .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(.black)
+                            .foregroundColor(.white)
                             .shadow(color: Settings.shadowColor, radius: Settings.shadowRadius, x: 2, y: 2)
                         HStack {
                             ScrollView(.horizontal) {
@@ -77,8 +93,8 @@ struct GameDetailsView: View {
                     VStack {
                         Text("Description")
                             .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(.black)
-                            .shadow(color: .black, radius: Settings.shadowRadius, x: 1, y: 1)
+                            .foregroundColor(.white)
+                            .shadow(color: .white, radius: Settings.shadowRadius, x: 1, y: 1)
                             .padding()
                         
                         TestHTMLText(html: description).offset(x: 5)
@@ -91,8 +107,8 @@ struct GameDetailsView: View {
                             if let req = $0.requirementsEn {
                                 Text("Minimum requirements for: \($0.platform.name)")
                                     .font(.system(size: 18, weight: .semibold))
-                                    .foregroundColor(.black)
-                                    .shadow(color: Settings.shadowColor, radius: Settings.shadowRadius, x: 1, y: 1)
+                                    .foregroundColor(.white)
+                                    .shadow(color: .white, radius: Settings.shadowRadius, x: 1, y: 1)
                                     .padding(20)
                                 TestHTMLText(html: req.minimum)
                                 
@@ -109,6 +125,7 @@ struct GameDetailsView: View {
                         try? dataManager.add(imageData: Data(contentsOf: url),
                                              id: gamesInfo?.id ?? 0,
                                              name: gamesInfo?.name ?? "")
+                        messageText = "Added successfully!"
                     }
                 }
                 
@@ -123,16 +140,20 @@ struct GameDetailsView: View {
                         }
                     
                 }
-            })
+            }).messageView(text: $messageText)
             )
             
-        }.offset(y: -30)
-            .task {
-                viewModel.id = gameId != 0 ? gameId : game!.id
-                await viewModel.loadInfo()
-                gamesInfo = viewModel.gamesInfo
-                dataManager = DataManager(moc: moc, favorites: favorites)
-            }
+        }.background {
+            SwiftUI.Color("AccentColor")
+                .ignoresSafeArea()
+        }
+        .offset(y: -30)
+        .task {
+            viewModel.id = gameId != 0 ? gameId : game!.id
+            await viewModel.loadInfo()
+            gamesInfo = viewModel.gamesInfo
+            dataManager = DataManager(moc: moc, favorites: favorites)
+        }
     }
 }
 
