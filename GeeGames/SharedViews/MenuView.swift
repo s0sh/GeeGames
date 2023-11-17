@@ -9,8 +9,8 @@ import SwiftUI
 
 enum MenuItems: Int, CaseIterable{
     case home = 0
-    case task
-    case add
+  //  case task
+    case forward
     case favorite
     case genres
     
@@ -18,10 +18,10 @@ enum MenuItems: Int, CaseIterable{
         switch self {
         case .home:
             return "Home"
-        case .task:
-            return "Task"
-        case .add:
-            return "Add"
+//        case .task:
+//            return "Task"
+        case .forward:
+            return "Forward"
         case .favorite:
             return "Favorites"
         case .genres:
@@ -33,9 +33,9 @@ enum MenuItems: Int, CaseIterable{
         switch self {
         case .home:
             return "house"
-        case .task:
-            return "backword"
-        case .add:
+//        case .task:
+//            return "backword"
+        case .forward:
             return "forward"
         case .favorite:
             return "heart"
@@ -55,15 +55,17 @@ struct MenuView: View {
                 TabView(selection: $selectedTab) {
                     HomeView(isPrev: nil)
                         .tag(0)
-                    HomeView(isPrev: true)
-                        .tag(1)
                     HomeView(isPrev: false)
-                        .tag(2)
+                        .tag(1)
+//                    HomeView(isPrev: false)
+//                        .tag(2)
                     FavoriteView()
-                        .tag(3)
+                        .tag(2)
                     GenresView()
-                        .tag(4)
+                        .tag(3)
                 }
+               // .tabViewStyle(.page(indexDisplayMode: .never))
+                
                 ZStack{
                     HStack{
                        

@@ -14,6 +14,8 @@ struct Settings {
 
 struct GameDetailsView: View {
     
+    @State var messageText = ""
+    
     @State var game: Game?
     
     @StateObject private var viewModel = GamesDetailViewModel()
@@ -109,6 +111,7 @@ struct GameDetailsView: View {
                         try? dataManager.add(imageData: Data(contentsOf: url),
                                              id: gamesInfo?.id ?? 0,
                                              name: gamesInfo?.name ?? "")
+                        messageText = "Added successfully!"
                     }
                 }
                 
@@ -123,7 +126,7 @@ struct GameDetailsView: View {
                         }
                     
                 }
-            })
+            }).messageView(text: $messageText)
             )
             
         }.offset(y: -30)
