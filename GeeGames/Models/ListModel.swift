@@ -158,7 +158,7 @@ enum Title: String, Codable {
 }
 
 // MARK: - ShortScreenshot
-struct ShortScreenshot: Codable {
+struct ShortScreenshot: Identifiable, Codable {
     let id: Int
     let image: String
 }

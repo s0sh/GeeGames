@@ -20,49 +20,55 @@ struct HomeView: View {
     @State private var filteredObjects: [Game] = []
     
     var body: some View {
-       
+        
         // MARK: Emty View
         if dataDidLoad == false {
+            
             VStack {
                 ProgressView {
                     Text("Loading...").font(.system(size: 40, weight: .bold))
-                        .foregroundColor(.red)
-                        .shadow(color: .red, radius: 10)
+                        .foregroundColor(.blue)
+                        .shadow(color: .blue, radius: 10)
                         .task {
+                            filteredObjects = []
                             await viewModel.loadGames()
                             filteredObjects = viewModel.gamesInfo
                             dataDidLoad = true
                         }
-                }.tint(.red)
+                }.tint(.blue)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(SwiftUI.Color("AccentColor"))
-                
+            .background {
+                SwiftUI.Color("AccentColor")
+                    .ignoresSafeArea()
+            }
+            
         } else {
-          
+            
             NavigationView {
+                
                 VStack {
                     List {
                         ForEach(filteredObjects) { item in
                             VStack(alignment: .center, spacing: 20) {
-
+                                
                                 
                                 // MARK: - Game Name
                                 
                                 Text("\(item.name)")
                                     .font(.system(size: 22, weight: .black))
-                                    .foregroundColor(.red)
-                                    .shadow(color: .red, radius: 5).listRowSeparator(.hidden)
-                                    
+                                    .foregroundColor(.blue)
+                                    .shadow(color: .blue, radius: 5).listRowSeparator(.hidden)
+                                
                                 // MARK: - Poster
-                              
-                                    NavigationLink {
-                                        GameDetailsView(game: item)
-                                    } label: {
-                                        ImageView(urlString: item.backgroundImage)
-                                            .frame(minHeight: 350)
-                                    }
-                              
+                                
+                                NavigationLink {
+                                    GameDetailsView(game: item)
+                                } label: {
+                                    ImageView(urlString: item.backgroundImage)
+                                        .frame(minHeight: 350)
+                                }
+                                
                                 // MARK: - Rating
                                 HStack {
                                     
@@ -71,44 +77,46 @@ struct HomeView: View {
                                         .padding(.all)
                                     
                                     Text("Reviews: \(item.reviewsCount)")
-                                        .foregroundColor(.black)
+                                        .foregroundColor(.white)
                                         .font(.system(size: 18, weight: .semibold, design: .rounded))
                                     
                                     
                                 }
                                 
-                               // Text("").frame(maxWidth: .infinity, maxHeight: 0.3).background(SwiftUI.Color.black)
-                                
                             }.listRowSeparator(.hidden)
-                             .background(SwiftUI.Color.white)
                         }
                     }
-                   // .frame(minWidth: .infinity)
-                   // .edgesIgnoringSafeArea(.all)
                     .listStyle(GroupedListStyle())
-                    .listRowBackground(SwiftUI.Color.clear)
+                    .background {
+                        SwiftUI.Color("AccentColor")
+                            .ignoresSafeArea()
+                    }
                 }
                 // MARK: - Networking / Business
-                    .task {
-                        if dataDidLoad == true && isPrev != nil {
-                            if isPrev == false {
-                                 await viewModel.loadNextPage()
-                                filteredObjects = viewModel.gamesInfo
-                                dataDidLoad = true
-                            } else if isPrev == true {
-                                await viewModel.loadPrevPage()
-                                filteredObjects = viewModel.gamesInfo
-                                dataDidLoad = true
-                            } else {
-                                await viewModel.loadGames()
-                                filteredObjects = viewModel.gamesInfo
-                                dataDidLoad = true
-                            }
+                .task {
+                    if dataDidLoad == true && isPrev != nil {
+                        if isPrev == false {
+                            await viewModel.loadNextPage()
+                            filteredObjects = viewModel.gamesInfo
+                            dataDidLoad = true
+                        } else if isPrev == true {
+                            await viewModel.loadPrevPage()
+                            filteredObjects = viewModel.gamesInfo
+                            dataDidLoad = true
+                        } else {
+                            await viewModel.loadGames()
+                            filteredObjects = viewModel.gamesInfo
+                            dataDidLoad = true
                         }
                     }
+                }
                 // MARK: - Navigation bar
-                    .navigationBarItems(leading: Text("Games")
-                                        .font(.system(size: 18, weight: .bold)))
+                .navigationBarItems(leading: Text("Games")
+                    .font(.system(size: 18, weight: .bold)))
+                .background {
+                    SwiftUI.Color("AccentColor")
+                        .ignoresSafeArea()
+                }
             }
             // MARK: - Search bar
             .searchable(text: $searchText, placement: .automatic, prompt: "Search games...")
@@ -120,11 +128,6 @@ struct HomeView: View {
                 }
             }
         }
-            
-        if filteredObjects.count > 0 {
-            MenuView()
-        }
-    
     }
 }
 

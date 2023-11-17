@@ -17,6 +17,9 @@ struct GeeGamesApp: App {
             ZStack {
                 HomeView()
                     .environment(\.managedObjectContext, dataController.conteiner.viewContext)
+                MenuView().environment(\.managedObjectContext, dataController.conteiner.viewContext)
+                    .background(SwiftUI.Color("AccentColor")).ignoresSafeArea()
+                   
             }
         }
     }
