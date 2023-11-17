@@ -18,15 +18,15 @@ struct GenresView: View {
             VStack {
                 ProgressView {
                     Text("Loading...").font(.system(size: 40, weight: .bold))
-                        .foregroundColor(.red)
-                        .shadow(color: .red, radius: 10)
+                        .foregroundColor(.blue)
+                        .shadow(color: .blue, radius: 10)
                         .task {
                             await genresViewModel.loadGenres()
                             if let genresList = genresViewModel.genres {
                                 genreObjects = genresList
                             }
                         }
-                }.tint(.red)
+                }.tint(.blue)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(SwiftUI.Color("AccentColor"))
@@ -38,8 +38,8 @@ struct GenresView: View {
                             VStack {
                                 Text("\(item.name)")
                                     .font(.system(size: 20, weight: .semibold))
-                                    .foregroundColor(.black)
-                                
+                                    .foregroundColor(.white)
+                                    .shadow(color: .white, radius: 5)
                                 ImageView(urlString: item.imageBackground)
                                 // .frame(width: 320, height: 300)
                                     .edgesIgnoringSafeArea(.all)
@@ -50,8 +50,9 @@ struct GenresView: View {
                                             GameDetailsView(isGenre: true, gameId: game.id)
                                         } label: {
                                             Text(" \(game.name)")
-                                                .frame(maxWidth: .infinity, minHeight: 50)
+                                                .frame(maxWidth: .infinity, minHeight: 35)
                                                 .listRowSeparator(.hidden)
+                                                .foregroundColor(SwiftUI.Color("AccentColor"))
                                             
                                             
                                         }.background(SwiftUI.Color.white)
@@ -59,12 +60,13 @@ struct GenresView: View {
                                             .background(SwiftUI.Color.clear)
                                     }.listRowSeparator(.hidden)
                                 }
-                                .frame(height: 300).background(SwiftUI.Color.white)
-                            }
-                        }
+                                .frame(height: 300).background(SwiftUI.Color("AccentColor"))
+                                
+                            }.background(SwiftUI.Color("AccentColor"))
+                        }.background(SwiftUI.Color("AccentColor"))
                     }
                 }
-                .navigationTitle(Text("Genres"))
+                .navigationTitle(Text("Genres").foregroundColor(.blue))
             }
         }
     }

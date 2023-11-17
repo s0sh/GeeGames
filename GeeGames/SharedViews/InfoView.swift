@@ -44,7 +44,7 @@ struct MessageView: View {
                         .padding(15)
                     Spacer()
                 }
-                .background(SwiftUI.Color.red)
+                .background(SwiftUI.Color.blue)
                 .cornerRadius(10)
                 .shadow(radius: 24)
                 .padding(.vertical, 5)

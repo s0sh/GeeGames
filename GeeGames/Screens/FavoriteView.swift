@@ -13,13 +13,18 @@ struct FavoriteView: View {
     @FetchRequest(sortDescriptors: []) private var favorites: FetchedResults<Favorites>
     
     @State var message: String = ""
-    
+        
     var body: some View {
+       
+            
+       
         if favorites.count == 0 {
             Text("It is nothing here!!!")
                 .font(.system(size: 22, weight: .black))
-                .foregroundColor(.red)
+                .foregroundColor(.blue)
+                .shadow(color: .blue, radius: 8)
         } else {
+            
             List {
                 ForEach(favorites) { fav in
                     Section {
@@ -32,8 +37,8 @@ struct FavoriteView: View {
                             
                             Text("\(fav.name!)")
                                 .font(.system(size: 22, weight: .black))
-                                .foregroundColor(.black)
-                                .shadow(color: .black, radius: 5).listRowSeparator(.hidden)
+                                .foregroundColor(.white)
+                                .shadow(color: .white, radius: 5).listRowSeparator(.hidden)
                             Button {
                                 message = "\(fav.name!): Removed!"
                                 try? moc.delete(fav)
@@ -47,10 +52,14 @@ struct FavoriteView: View {
                             }
                         }.frame(maxWidth: .infinity)
                     }
+                }.background {
+                    SwiftUI.Color("AccentColor")
+                        .ignoresSafeArea()
                 }
             }.navigationTitle("")
                 .messageView(text: $message)
         }
+                    
     }
 }
 
