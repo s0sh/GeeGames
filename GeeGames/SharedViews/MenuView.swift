@@ -83,7 +83,7 @@ struct MenuView: View {
                     .padding(6)
                 }
                 .frame(height: 70)
-                .background(SwiftUI.Color("main"))
+                .background(SwiftUI.Color.blue)
                 .cornerRadius(35)
                 .padding(.horizontal, 26)
                 .shadow(radius: 25, x: 3, y: 3)

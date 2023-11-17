@@ -69,7 +69,7 @@ struct ImageView: View {
     
     var body: some View {
         ZStack {
-            ProgressView().tint(.red)
+            ProgressView().tint(.blue)
             Image(uiImage: imageViewModel.image ?? UIImage())
                 .resizable()
             //  .frame(minHeight: 350)
