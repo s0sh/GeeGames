@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import WebKit
+import Foundation
 
 struct Settings {
     static let shadowRadius = 10.0
@@ -91,13 +93,15 @@ struct GameDetailsView: View {
                 if let description = gamesInfo?.description {
                     VStack {
                         Text("Description")
-                            .font(.system(size: 18, weight: .semibold))
+                            .font(.system(size: 22, weight: .semibold))
                             .foregroundColor(.white)
                             .shadow(color: .white, radius: Settings.shadowRadius, x: 1, y: 1)
                             .padding()
-                        
-                        TestHTMLText(html: description).offset(x: 5)
-                        
+                        //HTMLStringView(htmlContent: description)
+                        //TestHTMLText(html: description)
+                        var object = HTMLExample(html: description)
+                        Text(object.attributedHtml.string)
+                           
                     }
                 }
                 if isGenre == false {
@@ -105,12 +109,16 @@ struct GameDetailsView: View {
                         ForEach(platforms) {
                             if let req = $0.requirementsEn {
                                 Text("Minimum requirements for: \($0.platform.name)")
-                                    .font(.system(size: 18, weight: .semibold))
+                                    .font(.system(size: 22, weight: .semibold))
                                     .foregroundColor(.white)
                                     .shadow(color: .white, radius: Settings.shadowRadius, x: 1, y: 1)
                                     .padding(20)
-                                TestHTMLText(html: req.minimum)
-                                
+                           
+                                    TestHTMLText(html: req.minimum)
+                        
+//                                var object = HTMLExample(html: req.minimum)
+//                                Text("\(object.attributedHtml)")
+
                             }
                         }
                     }
@@ -172,6 +180,25 @@ struct TestHTMLText: View {
     }
 }
 
-//#Preview {
-//    GameDetailsView()
-//}
+struct HTMLExample {
+    @State var html: String = ""
+
+    var attributedHtml: NSAttributedString {
+        let html: String = "<html><body><span style=\"font-family: '-apple-system', 'HelveticaNeue'; font-size: 14\">\(self.html)</span></body></html>"
+        guard let data = html.data(using: String.Encoding.utf16, allowLossyConversion: false) else {
+            return NSAttributedString(string: "")
+        }
+        do {
+            let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
+                NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html,
+                NSAttributedString.DocumentReadingOptionKey.characterEncoding: String.Encoding.utf16.rawValue
+            ]
+            let result = try NSAttributedString(data: data,
+                                                options: options,
+                                                documentAttributes: nil)
+            return result
+        } catch {
+            return NSAttributedString(string: "")
+        }
+    }
+}
