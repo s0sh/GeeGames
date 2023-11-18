@@ -62,12 +62,13 @@ struct GenresView: View {
                                 }
                                 .frame(height: 300).background(SwiftUI.Color("AccentColor"))
                                 
-                            }.background(SwiftUI.Color("AccentColor"))
+                            }
                         }.background(SwiftUI.Color("AccentColor"))
                     }
                 }
                 .navigationTitle(Text("Genres").foregroundColor(.blue))
-            }
+                
+            }.accentColor(.blue)
         }
     }
 }
