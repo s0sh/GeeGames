@@ -117,7 +117,7 @@ struct HomeView: View {
                     SwiftUI.Color("AccentColor")
                         .ignoresSafeArea()
                 }
-            }
+            }.accentColor(.blue)
             // MARK: - Search bar
             .searchable(text: $searchText, placement: .automatic, prompt: "Search games...")
             .onChange(of: searchText) { searchText in

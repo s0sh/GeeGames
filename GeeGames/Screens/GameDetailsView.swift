@@ -33,7 +33,6 @@ struct GameDetailsView: View {
     @State var dataManager: DataManager?
     
     var body: some View {
-        
         ScrollView(.vertical) {
             
             VStack {
@@ -143,10 +142,7 @@ struct GameDetailsView: View {
             }).messageView(text: $messageText)
             )
             
-        }.background {
-            SwiftUI.Color("AccentColor")
-                .ignoresSafeArea()
-        }
+        }.accentColor(.white).background { SwiftUI.Color("AccentColor").ignoresSafeArea() }
         .offset(y: -30)
         .task {
             viewModel.id = gameId != 0 ? gameId : game!.id
@@ -154,6 +150,7 @@ struct GameDetailsView: View {
             gamesInfo = viewModel.gamesInfo
             dataManager = DataManager(moc: moc, favorites: favorites)
         }
+   
     }
 }
 
