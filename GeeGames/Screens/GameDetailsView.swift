@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import WebKit
+import UIKit
 import Foundation
 
 struct Settings {
@@ -97,8 +97,7 @@ struct GameDetailsView: View {
                             .foregroundColor(.white)
                             .shadow(color: .white, radius: Settings.shadowRadius, x: 1, y: 1)
                             .padding()
-                        //HTMLStringView(htmlContent: description)
-                        //TestHTMLText(html: description)
+                        
                         var object = HTMLExample(html: description)
                         Text(object.attributedHtml.string)
                            
@@ -106,22 +105,21 @@ struct GameDetailsView: View {
                 }
                 if isGenre == false {
                     if let platforms = game?.platforms  {
-                        ForEach(platforms) {
-                            if let req = $0.requirementsEn {
-                                Text("Minimum requirements for: \($0.platform.name)")
-                                    .font(.system(size: 22, weight: .semibold))
-                                    .foregroundColor(.white)
-                                    .shadow(color: .white, radius: Settings.shadowRadius, x: 1, y: 1)
-                                    .padding(20)
-                           
-                                    TestHTMLText(html: req.minimum)
                         
-//                                var object = HTMLExample(html: req.minimum)
-//                                Text("\(object.attributedHtml)")
-
+                        //ForEach(platforms) {
+                                if let req = platforms[0].requirementsEn {
+                                    Text("Minimum requirements for: \(platforms[0].platform.name)")
+                                        .font(.system(size: 22, weight: .semibold))
+                                        .foregroundColor(.white)
+                                        .shadow(color: .white, radius: Settings.shadowRadius, x: 1, y: 1)
+                                        .padding(20)
+                                    
+                                        //TestHTMLText(html: req.minimum)
+                                        Text("\(HTMLExample(html: req.minimum).attributedHtml.string)")
+                                }
                             }
-                        }
-                    }
+               //        }
+                    
                 }
             }
             .navigationBarItems(trailing:
@@ -167,12 +165,14 @@ struct TestHTMLText: View {
     @State var html = ""
     
     var body: some View {
+        
         if let nsAttributedString = try? NSAttributedString(data: Data(html.utf8),
                                                             options: [.documentType: NSAttributedString.DocumentType.html],
                                                             documentAttributes: nil),
            let attributedString = try? AttributedString(nsAttributedString, including: \.uiKit) {
             
             Text(attributedString).background(SwiftUI.Color.white)
+            
         } else {
             // fallback...
             Text(html)
@@ -184,19 +184,24 @@ struct HTMLExample {
     @State var html: String = ""
 
     var attributedHtml: NSAttributedString {
-        let html: String = "<html><body><span style=\"font-family: '-apple-system', 'HelveticaNeue'; font-size: 14\">\(self.html)</span></body></html>"
-        guard let data = html.data(using: String.Encoding.utf16, allowLossyConversion: false) else {
+        let html: String = "<html><body><span style=\"font-family: '-apple-system', 'Helvetica'; font-size: 14\">\(self.html)</span></body></html>"
+        
+        guard let data = html.data(using: String.Encoding.utf8, allowLossyConversion: false) else {
             return NSAttributedString(string: "")
         }
         do {
             let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
                 NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html,
-                NSAttributedString.DocumentReadingOptionKey.characterEncoding: String.Encoding.utf16.rawValue
+                NSAttributedString.DocumentReadingOptionKey.characterEncoding: String.Encoding.utf8.rawValue
             ]
-            let result = try NSAttributedString(data: data,
-                                                options: options,
-                                                documentAttributes: nil)
-            return result
+            
+                if let result = try? NSAttributedString(data: data,
+                                                        options: options,
+                                                        documentAttributes: nil) {
+                    return result
+                }
+            
+            return NSAttributedString(string: html)
         } catch {
             return NSAttributedString(string: "")
         }
