@@ -106,7 +106,7 @@ struct GameDetailsView: View {
                 if isGenre == false {
                     if let platforms = game?.platforms  {
                         
-                        //ForEach(platforms) {
+                        //ForEach(platforms) { #Crash in loop here
                                 if let req = platforms[0].requirementsEn {
                                     Text("Minimum requirements for: \(platforms[0].platform.name)")
                                         .font(.system(size: 22, weight: .semibold))
@@ -122,8 +122,8 @@ struct GameDetailsView: View {
                     
                 }
             }
-            .navigationBarItems(trailing:
-                                    Button(action: {
+            // MARK: - Add to favorites button [Navigation]
+            .navigationBarItems(trailing: Button(action: {
                 
                 if let dataManager = self.dataManager {
                     if let url = URL(string: gamesInfo?.backgroundImage ?? "") {
@@ -135,19 +135,17 @@ struct GameDetailsView: View {
                 }
                 
             }, label: {
-                HStack {
-                    Image(systemName: "heart")
+                HStack { Image(systemName: "heart")
                         .frame(width: 30, height: 30)
                         .font(.system(size: 20, weight: .medium))
                         .foregroundColor(.red)
                         .alignmentGuide(.bottom) {
                             $0[.top]
                         }
-                    
                 }
             }).messageView(text: $messageText)
             )
-            
+
         }.accentColor(.white).background { SwiftUI.Color("AccentColor").ignoresSafeArea() }
         .offset(y: -30)
         .task {
@@ -155,55 +153,6 @@ struct GameDetailsView: View {
             await viewModel.loadInfo()
             gamesInfo = viewModel.gamesInfo
             dataManager = DataManager(moc: moc, favorites: favorites)
-        }
-   
-    }
-}
-
-struct TestHTMLText: View {
-    
-    @State var html = ""
-    
-    var body: some View {
-        
-        if let nsAttributedString = try? NSAttributedString(data: Data(html.utf8),
-                                                            options: [.documentType: NSAttributedString.DocumentType.html],
-                                                            documentAttributes: nil),
-           let attributedString = try? AttributedString(nsAttributedString, including: \.uiKit) {
-            
-            Text(attributedString).background(SwiftUI.Color.white)
-            
-        } else {
-            // fallback...
-            Text(html)
-        }
-    }
-}
-
-struct HTMLExample {
-    @State var html: String = ""
-
-    var attributedHtml: NSAttributedString {
-        let html: String = "<html><body><span style=\"font-family: '-apple-system', 'Helvetica'; font-size: 14\">\(self.html)</span></body></html>"
-        
-        guard let data = html.data(using: String.Encoding.utf8, allowLossyConversion: false) else {
-            return NSAttributedString(string: "")
-        }
-        do {
-            let options: [NSAttributedString.DocumentReadingOptionKey: Any] = [
-                NSAttributedString.DocumentReadingOptionKey.documentType: NSAttributedString.DocumentType.html,
-                NSAttributedString.DocumentReadingOptionKey.characterEncoding: String.Encoding.utf8.rawValue
-            ]
-            
-                if let result = try? NSAttributedString(data: data,
-                                                        options: options,
-                                                        documentAttributes: nil) {
-                    return result
-                }
-            
-            return NSAttributedString(string: html)
-        } catch {
-            return NSAttributedString(string: "")
         }
     }
 }

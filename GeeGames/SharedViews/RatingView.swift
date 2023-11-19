@@ -19,13 +19,19 @@ struct RatingView: View {
     var body: some View {
         HStack {
             
-            Text("\(rating)").font(.system(size: 18, weight: .semibold, design: .rounded))
+            Text("\(rating)")
+                .foregroundColor(SwiftUI.Color("AccentColor"))
+                .font(.system(size: 18, weight: .semibold, design: .rounded))
+                
             ForEach(1..<Int(maximumRating) + Int(Float(1.0)), id: \.self) { number in
                 image(for: number)
                     .foregroundColor(number > Int(rating) ? offColor : onColor)
                     
             }
-            Text("of 5").font(.system(size: 18, weight: .semibold, design: .rounded))
+            
+            Text("of 5")
+                .foregroundColor(SwiftUI.Color("AccentColor"))
+                .font(.system(size: 18, weight: .semibold, design: .rounded))
         }
     }
     

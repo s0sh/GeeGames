@@ -41,7 +41,7 @@ struct GenresView: View {
                                     .foregroundColor(.white)
                                     .shadow(color: .white, radius: 5)
                                 ImageView(urlString: item.imageBackground)
-                                // .frame(width: 320, height: 300)
+                                //.frame(width: 320, height: 300)
                                     .edgesIgnoringSafeArea(.all)
                                 
                                 List {
@@ -52,15 +52,15 @@ struct GenresView: View {
                                             Text(" \(game.name)")
                                                 .frame(maxWidth: .infinity, minHeight: 35)
                                                 .listRowSeparator(.hidden)
-                                                .foregroundColor(SwiftUI.Color("AccentColor"))
-                                            
-                                            
-                                        }.background(SwiftUI.Color.white)
+                                                .foregroundColor(SwiftUI.Color.white)
+                                                .background(SwiftUI.Color("AccentColor"))
+
+                                        }.background(SwiftUI.Color("AccentColor"))
                                             .listRowSeparator(.hidden)
-                                            .background(SwiftUI.Color.clear)
+                                           // .background(SwiftUI.Color.clear)
                                     }.listRowSeparator(.hidden)
                                 }
-                                .frame(height: 300).background(SwiftUI.Color("AccentColor"))
+                                .frame(maxWidth: .infinity, minHeight: 300).background(SwiftUI.Color("AccentColor"))
                                 
                             }
                         }.background(SwiftUI.Color("AccentColor"))

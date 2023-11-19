@@ -46,14 +46,12 @@ struct HomeView: View {
         } else {
             
             NavigationView {
-                
                 VStack {
                     List {
                         ForEach(filteredObjects) { item in
                             VStack(alignment: .center, spacing: 20) {
                                 
-                                
-                                // MARK: - Game Name
+                                // MARK: - Name
                                 
                                 Text("\(item.name)")
                                     .font(.system(size: 22, weight: .black))
@@ -77,7 +75,7 @@ struct HomeView: View {
                                         .padding(.all)
                                     
                                     Text("Reviews: \(item.reviewsCount)")
-                                        .foregroundColor(.white)
+                                        .foregroundColor(.blue)
                                         .font(.system(size: 18, weight: .semibold, design: .rounded))
                                     
                                     
@@ -85,12 +83,8 @@ struct HomeView: View {
                                 
                             }.listRowSeparator(.hidden)
                         }
-                    }
-                    .listStyle(GroupedListStyle())
-                    .background {
-                        SwiftUI.Color("AccentColor")
-                            .ignoresSafeArea()
-                    }
+                    }.listStyle(GroupedListStyle())
+                    .preferredColorScheme(.dark)
                 }
                 // MARK: - Networking / Business
                 .task {
@@ -113,10 +107,10 @@ struct HomeView: View {
                 // MARK: - Navigation bar
                 .navigationBarItems(leading: Text("Games")
                     .font(.system(size: 18, weight: .bold)))
-                .background {
+                .foregroundColor(
                     SwiftUI.Color("AccentColor")
-                        .ignoresSafeArea()
-                }
+                        //.ignoresSafeArea()
+                )
             }.accentColor(.blue)
             // MARK: - Search bar
             .searchable(text: $searchText, placement: .automatic, prompt: "Search games...")
