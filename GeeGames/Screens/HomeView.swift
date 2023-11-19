@@ -39,8 +39,7 @@ struct HomeView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background {
-                SwiftUI.Color("AccentColor")
-                    .ignoresSafeArea()
+                SwiftUI.Color("AccentColor").ignoresSafeArea()
             }
             
         } else {

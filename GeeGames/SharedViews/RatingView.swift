@@ -20,7 +20,7 @@ struct RatingView: View {
         HStack {
             
             Text("\(rating)")
-                .foregroundColor(SwiftUI.Color("AccentColor"))
+                .foregroundColor(SwiftUI.Color.blue)
                 .font(.system(size: 18, weight: .semibold, design: .rounded))
                 
             ForEach(1..<Int(maximumRating) + Int(Float(1.0)), id: \.self) { number in
@@ -30,7 +30,7 @@ struct RatingView: View {
             }
             
             Text("of 5")
-                .foregroundColor(SwiftUI.Color("AccentColor"))
+                .foregroundColor(SwiftUI.Color.blue)
                 .font(.system(size: 18, weight: .semibold, design: .rounded))
         }
     }
