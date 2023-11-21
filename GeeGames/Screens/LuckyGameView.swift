@@ -12,7 +12,7 @@ import SwiftUI
 //    @State private var enable = false
 //    @State private var dragValue = CGSize.zero
 //    var body: some View {
-//        
+//
 //            HStack(spacing: 0) {
 //                ForEach(0..<characters.count) { num in
 //                    Text(String(characters[num]))
@@ -45,41 +45,37 @@ struct Card: View {
     var body: some View {
         SwiftUI.Color.black.overlay(
             HStack(spacing: 25) {
+                // MARK: -  First game
                 ZStack {
                     VStack(spacing: 10) {
-                        
-                        RoundedRectangle(cornerSize: CGSize(width: 1, height: 1))
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(.white, lineWidth: 2)
                             .frame(width: 150, height: 250)
-                            .overlay(RoundedRectangle(cornerRadius: 10)
-                                .stroke(.white, lineWidth: 2)
-                                .background(SwiftUI.Color("settings_item_bg"))
-                                .shadow(color: .white, radius: 10, x: 1, y: 1)
-                            )
-                            Text(gameFirst?.name ?? "Comming...").foregroundColor(.white)
+                            .background(ImageView(urlString: gameFirst?.backgroundImage))
+                            .shadow(color: .white, radius: 10, x: 1, y: 1)
+                        
+                        Text(gameFirst?.name ?? "Comming...").foregroundColor(.white)
                         
                     }
-                    if gameFirst == nil && genreSelected == false {
+                    if gameFirst == nil && genreSelected == true {
                         CircularProgressView()
-                    } else {
-                        ImageView(urlString: gameFirst?.backgroundImage)
                     }
+                    
                 }
-                
+                // MARK: Second game
                 ZStack {
-                    VStack {
-                        RoundedRectangle(cornerSize: CGSize(width: 2, height: 2))
+                    VStack(spacing: 10) {
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(.white, lineWidth: 2)
                             .frame(width: 150, height: 250)
-                            .overlay(RoundedRectangle(cornerRadius: 10)
-                                .stroke(.white, lineWidth: 2)
-                                .background(SwiftUI.Color("settings_item_bg"))
-                                .shadow(color: .white, radius: 10, x: 1, y: 1)
-                            )
-                            Text(gameSecond?.name ?? "Comming...").foregroundColor(.white)
+                            .background(ImageView(urlString: gameSecond?.backgroundImage))
+                            .shadow(color: .white, radius: 10, x: 1, y: 1)
+                        
+                        Text(gameSecond?.name ?? "Comming...").foregroundColor(.white)
+                        
                     }
-                    if gameSecond == nil && genreSelected == false {
+                    if gameSecond == nil && genreSelected == true {
                         CircularProgressView()
-                    } else {
-                        ImageView(urlString: gameFirst?.backgroundImage)
                     }
                 }
             }
@@ -104,11 +100,11 @@ struct CircularProgressView: View {
                 .stroke(style: StrokeStyle(lineWidth: foregroundCircleLineWidth, lineCap: .round))
                 .fill(SwiftUI.Color.red)
                 .rotationEffect(self.rotationDegree)
-            Text("Choosing game...")
+            Text("Randomize...")
                 .font(.system(size: 12, weight: .bold))
                 .foregroundColor(.white)
                 .lineLimit(2)
-
+            
         }
         .frame(width: viewWidth, height: viewWidth)
         .onAppear() {
@@ -122,7 +118,7 @@ struct CircularProgressView: View {
     
     
     func animateLoader() {
-          self.rotationDegree = .degrees(720)
+        self.rotationDegree = .degrees(720)
     }
 }
 
@@ -137,41 +133,38 @@ struct LuckyGameView: View {
     var body: some View {
         SwiftUI.Color("AccentColor").overlay(
             VStack {
-                
                 Card(genreSelected: $genreSelected,
                      gameFirst: $gameFirst,
                      gameSecond: $gameSecond).padding(50)
-                    Spacer()
+                Spacer()
                 Button(action: {
-                    genreSelected.toggle()
-                   // if hasTimeElapsed {
-                        gameFirst = viewModel.gamesInfo[Int(arc4random())%20]
-                        gameSecond = viewModel.gamesInfo[Int(arc4random())%20]
-                    //}
-//                    Task {
-//                        if !genreSelected {
-//                            await delayTask()
-//                        }
-//                    }
+                    Task {
+                        if !hasTimeElapsed {
+                            genreSelected = true
+                            await delayTask()
+                            hasTimeElapsed = false
+                        }
+                    }
                 }, label: {
-                    Text(genreSelected ? "Stop choosing" : "Start choosing...")
+                    Text("Randomize")
                         .frame(width: 250, height: 60)
                         .foregroundColor(.white)
                         .background(SwiftUI.Color("settings_item_bg"))
                         .cornerRadius(14)
                         .font(.system(size: 18, weight: .bold))
                 }).offset(y: -100)
-               
                 Spacer()
             }
             
         ).ignoresSafeArea()
     }
     
-       private func delayTask() async {
-           try? await Task.sleep(nanoseconds: 5_000_000_000)
-           hasTimeElapsed = true
-       }
+    private func delayTask() async {
+        try? await Task.sleep(nanoseconds: 5_000_000_000)
+        hasTimeElapsed = true
+        gameFirst = viewModel.gamesInfo[Int(arc4random())%20]
+        gameSecond = viewModel.gamesInfo[Int(arc4random())%20]
+    }
 }
 
 #Preview {
