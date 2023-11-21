@@ -9,23 +9,20 @@ import SwiftUI
 
 enum MenuItems: Int, CaseIterable{
     case home = 0
-  //  case task
-    case forward
     case favorite
     case genres
+    case settings
     
     var title: String{
         switch self {
         case .home:
             return "Home"
-//        case .task:
-//            return "Task"
-        case .forward:
-            return "Forward"
         case .favorite:
             return "Favorites"
         case .genres:
             return "Genres"
+        case .settings:
+            return "Settings"
         }
     }
     
@@ -33,13 +30,11 @@ enum MenuItems: Int, CaseIterable{
         switch self {
         case .home:
             return "house"
-//        case .task:
-//            return "backword"
-        case .forward:
-            return "forward"
         case .favorite:
             return "heart"
         case .genres:
+            return "stack"
+        case .settings:
             return "settings"
         }
     }
@@ -48,6 +43,7 @@ enum MenuItems: Int, CaseIterable{
 struct MenuView: View {
     
     @State var selectedTab = 0
+    let systemImage = Image(systemName: "gear")
     
     var body: some View {
         
@@ -55,13 +51,11 @@ struct MenuView: View {
                 TabView(selection: $selectedTab) {
                     HomeView(onCommit: nil, isPrev: nil)
                         .tag(0)
-                    HomeView(onCommit: nil, isPrev: false)
-                        .tag(1)
-//                    HomeView(isPrev: false)
-//                        .tag(2)
                     FavoriteView()
-                        .tag(2)
+                        .tag(1)
                     GenresView()
+                        .tag(2)
+                    SettingsView()
                         .tag(3)
                 }
                // .tabViewStyle(.page(indexDisplayMode: .never))
@@ -103,6 +97,7 @@ extension MenuView{
                 .foregroundColor(isActive ? .white : .gray)
                 .frame(width: isAdd ? CGFloat(70) : CGFloat(30),
                        height: isAdd ? CGFloat(70) : CGFloat(30))
+            
             Spacer()
         }
         .frame(width: isActive ? 80 : 50, height: 50)

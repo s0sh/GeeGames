@@ -68,7 +68,6 @@ struct HomeView: View {
                             VStack(alignment: .center, spacing: 20) {
                                 
                                 // MARK: - Name
-                                
                                 Text("\(item.name)")
                                     .font(.system(size: 22, weight: .black))
                                     .foregroundColor(.blue)
