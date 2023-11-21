@@ -9,13 +9,13 @@ import SwiftUI
 
 struct HomeContainerView: View {
     @EnvironmentObject var store: AppStore
-
+    
     var body: some View {
         HomeView(onCommit: fetch, gameObjects: store.state.loadedGames)
             .onAppear(perform: fetch)
-            
+        
     }
-
+    
     private func fetch() {
         store.send(.getGameInfo)
     }
@@ -32,12 +32,11 @@ struct HomeView: View {
     @State var isPrev: Bool?
     
     @StateObject private var viewModel = GamesListViewModel()
-
+    
     var body: some View {
         
         // MARK: Emty View
         if dataDidLoad == false {
-            
             VStack {
                 ProgressView {
                     Text("Loading...").font(.system(size: 40, weight: .bold))
@@ -97,44 +96,43 @@ struct HomeView: View {
                                 }
                             }.listRowSeparator(.hidden)
                         }
-                    }.listStyle(GroupedListStyle())
-                    .preferredColorScheme(.dark)
-                }
-                // MARK: - Networking / Business
-                .task {
-                    if dataDidLoad == true && isPrev != nil {
-                        if isPrev == false {
-                            await viewModel.loadNextPage()
-                            gameObjects = viewModel.gamesInfo
-                            dataDidLoad = true
-                        } else if isPrev == true {
-                            await viewModel.loadPrevPage()
-                            gameObjects = viewModel.gamesInfo
-                            dataDidLoad = true
-                        } else {
-                            await viewModel.loadGames()
-                            gameObjects = viewModel.gamesInfo
-                            dataDidLoad = true
+                        
+                        // MARK: -  Load More...
+                        if viewModel.isMoreDataAvailable {
+                            HStack {
+                                Button {
+                                    Task {
+                                        await viewModel.loadNextPage()
+                                        gameObjects = viewModel.gamesInfo
+                                    }
+                                } label: {
+                                    Text("Load more...")
+                                        .frame(maxWidth: .infinity, maxHeight: 60)
+                                        .background(SwiftUI.Color.blue)
+                                        .font(.system(size: 20, weight: .bold))
+                                        .foregroundColor(.white)
+                                        .cornerRadius(14)
+                                }
+                            }
                         }
                     }
+                    .listStyle(GroupedListStyle())
+                    .preferredColorScheme(.dark)
                 }
                 // MARK: - Navigation bar
                 .navigationBarItems(leading: Text("Games")
-                    .font(.system(size: 24, weight: .bold)))
-                .foregroundColor(
-                    SwiftUI.Color.white
-                        //.ignoresSafeArea()
-                )
+                .font(.system(size: 24, weight: .bold)))
+                .foregroundColor(SwiftUI.Color.white)
             }.accentColor(.blue)
             // MARK: - Search bar
-            .searchable(text: $searchText, placement: .automatic, prompt: "Search games...")
-            .onChange(of: searchText) { searchText in
-                if !searchText.isEmpty {
-                    gameObjects = viewModel.gamesInfoFiltered.filter { $0.name.contains(searchText) }
-                } else {
-                    gameObjects = viewModel.gamesInfo
+                .searchable(text: $searchText, placement: .automatic, prompt: "Search games...")
+                .onChange(of: searchText) { searchText in
+                    if !searchText.isEmpty {
+                        gameObjects = viewModel.gamesInfoFiltered.filter { $0.name.contains(searchText) }
+                    } else {
+                        gameObjects = viewModel.gamesInfo
+                    }
                 }
-            }
         }
     }
 }

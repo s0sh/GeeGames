@@ -28,7 +28,7 @@ class GamesListViewModel: ObservableObject {
     @Published var gamesInfo: [Game] = []
     @State var tmpInfo: [Game] = []
     @Published var gamesInfoFiltered: [Game] = []
-    
+    var isMoreDataAvailable = false
     let data: OperationslData = OperationslData.shared
     var count: Int = 0
     
@@ -51,7 +51,7 @@ class GamesListViewModel: ObservableObject {
     func loadNextPage() async {
         do {
             let games = try await loadItems(by: data.nextUrl)
-            gamesInfo = games
+            gamesInfo += games
         } catch {
             print("Couldn't load photos: \(error)")
         }
@@ -79,7 +79,13 @@ class GamesListViewModel: ObservableObject {
             let decoder = JSONDecoder()
             decoder.keyDecodingStrategy = .convertFromSnakeCase
             let decodedResponse = try decoder.decode(Games.self, from: data)
+            
             self.data.nextUrl = decodedResponse.next
+            
+            if decodedResponse.next != "" {
+                self.isMoreDataAvailable = true
+            }
+            
             if let previous = decodedResponse.previous {
                 self.data.prevUrl = previous
             }

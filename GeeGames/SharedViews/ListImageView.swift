@@ -31,24 +31,25 @@ class ImageViewModel: ObservableObject {
 
     private func loadImageFromURL(urlString: String) {
         guard let url = URL(string: urlString) else { return }
-
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            guard error == nil else {
-                print(error ?? "unknown error")
-                return
-            }
-
-            guard let data = data else {
-                print("No data found")
-                return
-            }
-
-            DispatchQueue.main.async { [weak self] in
-                guard let loadedImage = UIImage(data: data) else { return }
-                self?.image = loadedImage
-                self?.setImageCache(image: loadedImage, key: urlString)
-            }
-        }.resume()
+        DispatchQueue.global(qos: .utility).async {
+            URLSession.shared.dataTask(with: url) { data, response, error in
+                guard error == nil else {
+                    print(error ?? "unknown error")
+                    return
+                }
+                
+                guard let data = data else {
+                    print("No data found")
+                    return
+                }
+                
+                DispatchQueue.main.async { [weak self] in
+                    guard let loadedImage = UIImage(data: data) else { return }
+                    self?.image = loadedImage
+                    self?.setImageCache(image: loadedImage, key: urlString)
+                }
+            }.resume()
+        }
     }
 
     private func setImageCache(image: UIImage, key: String) {

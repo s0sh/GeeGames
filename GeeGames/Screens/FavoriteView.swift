@@ -66,7 +66,7 @@ struct FavoriteView: View {
                     }
                 }.messageView(text: $message)
             }
-        }.tint(.white)
+        }.tint(.blue)
     }
 }
 
