@@ -53,9 +53,9 @@ struct MenuView: View {
         
             ZStack(alignment: .bottom){
                 TabView(selection: $selectedTab) {
-                    HomeView(isPrev: nil)
+                    HomeView(onCommit: nil, isPrev: nil)
                         .tag(0)
-                    HomeView(isPrev: false)
+                    HomeView(onCommit: nil, isPrev: false)
                         .tag(1)
 //                    HomeView(isPrev: false)
 //                        .tag(2)

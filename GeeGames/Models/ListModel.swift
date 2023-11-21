@@ -65,7 +65,6 @@ struct Game: Identifiable, Codable {
     let platforms: [PlatformElement]
     let parentPlatforms: [ParentPlatform]
     let genres: [Genre]
-    let stores: [Store]
     let clip: JSONNull?
     let tags: [Genre]
     let shortScreenshots: [ShortScreenshot]
@@ -161,12 +160,6 @@ enum Title: String, Codable {
 struct ShortScreenshot: Identifiable, Codable {
     let id: Int
     let image: String
-}
-
-// MARK: - Store
-struct Store: Codable {
-    let id: Int
-    let store: Genre
 }
 
 // MARK: - Encode/decode helpers

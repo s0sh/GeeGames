@@ -146,7 +146,8 @@ struct GameDetailsView: View {
             }).messageView(text: $messageText)
             )
 
-        }.accentColor(.white).background { SwiftUI.Color("AccentColor").ignoresSafeArea() }
+        }.background { SwiftUI.Color("AccentColor").ignoresSafeArea() }
+         .accentColor(.white)
         .offset(y: -30)
         .task {
             viewModel.id = gameId != 0 ? gameId : game!.id

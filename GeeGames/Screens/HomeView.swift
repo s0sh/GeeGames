@@ -7,18 +7,32 @@
 
 import SwiftUI
 
+struct HomeContainerView: View {
+    @EnvironmentObject var store: AppStore
+
+    var body: some View {
+        HomeView(onCommit: fetch, gameObjects: store.state.loadedGames)
+            .onAppear(perform: fetch)
+            
+    }
+
+    private func fetch() {
+        store.send(.getGameInfo)
+    }
+}
+
 struct HomeView: View {
     
-    @State var isPrev: Bool?
+    let onCommit: (() -> Void)?
     
-    @State var dataDidLoad: Bool = false
-    
-    @StateObject private var viewModel = GamesListViewModel()
     
     @State private var searchText: String = ""
+    @State private var dataDidLoad: Bool = false
+    @State var gameObjects: [Game] = []
+    @State var isPrev: Bool?
     
-    @State private var filteredObjects: [Game] = []
-    
+    @StateObject private var viewModel = GamesListViewModel()
+
     var body: some View {
         
         // MARK: Emty View
@@ -30,24 +44,28 @@ struct HomeView: View {
                         .foregroundColor(.blue)
                         .shadow(color: .blue, radius: 10)
                         .task {
-                            filteredObjects = []
+                            onCommit?()
+                            gameObjects = []
                             await viewModel.loadGames()
-                            filteredObjects = viewModel.gamesInfo
+                            gameObjects = viewModel.gamesInfo
                             dataDidLoad = true
                         }
                 }.tint(.blue)
+                    .onAppear {
+                        UserDefaults.standard.setValue(true, forKey: "tearms_tapped")
+                    }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background {
                 SwiftUI.Color("AccentColor").ignoresSafeArea()
             }
-            
-        } else {
+        }
+        else {
             
             NavigationView {
                 VStack {
                     List {
-                        ForEach(filteredObjects) { item in
+                        ForEach(gameObjects) { item in
                             VStack(alignment: .center, spacing: 20) {
                                 
                                 // MARK: - Name
@@ -76,10 +94,7 @@ struct HomeView: View {
                                     Text("Reviews: \(item.reviewsCount)")
                                         .foregroundColor(.blue)
                                         .font(.system(size: 18, weight: .semibold, design: .rounded))
-                                    
-                                    
                                 }
-                                
                             }.listRowSeparator(.hidden)
                         }
                     }.listStyle(GroupedListStyle())
@@ -90,24 +105,24 @@ struct HomeView: View {
                     if dataDidLoad == true && isPrev != nil {
                         if isPrev == false {
                             await viewModel.loadNextPage()
-                            filteredObjects = viewModel.gamesInfo
+                            gameObjects = viewModel.gamesInfo
                             dataDidLoad = true
                         } else if isPrev == true {
                             await viewModel.loadPrevPage()
-                            filteredObjects = viewModel.gamesInfo
+                            gameObjects = viewModel.gamesInfo
                             dataDidLoad = true
                         } else {
                             await viewModel.loadGames()
-                            filteredObjects = viewModel.gamesInfo
+                            gameObjects = viewModel.gamesInfo
                             dataDidLoad = true
                         }
                     }
                 }
                 // MARK: - Navigation bar
                 .navigationBarItems(leading: Text("Games")
-                    .font(.system(size: 18, weight: .bold)))
+                    .font(.system(size: 24, weight: .bold)))
                 .foregroundColor(
-                    SwiftUI.Color("AccentColor")
+                    SwiftUI.Color.white
                         //.ignoresSafeArea()
                 )
             }.accentColor(.blue)
@@ -115,15 +130,11 @@ struct HomeView: View {
             .searchable(text: $searchText, placement: .automatic, prompt: "Search games...")
             .onChange(of: searchText) { searchText in
                 if !searchText.isEmpty {
-                    filteredObjects = viewModel.gamesInfoFiltered.filter { $0.name.contains(searchText) }
+                    gameObjects = viewModel.gamesInfoFiltered.filter { $0.name.contains(searchText) }
                 } else {
-                    filteredObjects = viewModel.gamesInfo
+                    gameObjects = viewModel.gamesInfo
                 }
             }
         }
     }
-}
-
-#Preview {
-    HomeView()
 }

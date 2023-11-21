@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+struct AppState {
+    var loadedGames: [Game] = []
+}

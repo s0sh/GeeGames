@@ -9,17 +9,21 @@ import SwiftUI
 
 @main
 struct GeeGamesApp: App {
-    
+    let appStore = AppStore(initialState: .init(),
+                         reducer: appReducer,
+                         environment: World())
     @StateObject private var dataController = DataController()
     
     var body: some Scene {
         WindowGroup {
+            
             ZStack {
-                HomeView()
-                    .environment(\.managedObjectContext, dataController.conteiner.viewContext)
-                MenuView().environment(\.managedObjectContext, dataController.conteiner.viewContext)
-                    
-                   
+                if UserDefaults.standard.bool(forKey: "tearms_tapped") == true {
+                    HomeContainerView().environmentObject(appStore)
+                    MenuView().environment(\.managedObjectContext, dataController.conteiner.viewContext)
+                } else {
+                    StartScreen().environmentObject(appStore)
+                }
             }
         }
     }
