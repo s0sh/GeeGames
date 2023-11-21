@@ -32,6 +32,7 @@
 		B5BC91A02B0B7FF200B94095 /* GameService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BC919F2B0B7FF200B94095 /* GameService.swift */; };
 		B5BC91A22B0CBC1A00B94095 /* StartScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BC91A12B0CBC1A00B94095 /* StartScreen.swift */; };
 		B5BC91A42B0D14ED00B94095 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BC91A32B0D14ED00B94095 /* SettingsView.swift */; };
+		B5BC91A62B0D45C900B94095 /* LuckyGameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BC91A52B0D45C900B94095 /* LuckyGameView.swift */; };
 		B5F5E7A82B06C3E400FD9C17 /* GeeGames.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = B5F5E7A62B06C3E400FD9C17 /* GeeGames.xcdatamodeld */; };
 		B5F5E7AA2B06C5E900FD9C17 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F5E7A92B06C5E900FD9C17 /* DataController.swift */; };
 		B5F5E7AC2B06C6A900FD9C17 /* DataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F5E7AB2B06C6A900FD9C17 /* DataManager.swift */; };
@@ -65,6 +66,7 @@
 		B5BC919F2B0B7FF200B94095 /* GameService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameService.swift; sourceTree = "<group>"; };
 		B5BC91A12B0CBC1A00B94095 /* StartScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartScreen.swift; sourceTree = "<group>"; };
 		B5BC91A32B0D14ED00B94095 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		B5BC91A52B0D45C900B94095 /* LuckyGameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LuckyGameView.swift; sourceTree = "<group>"; };
 		B5F5E7A72B06C3E400FD9C17 /* GeeGames.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = GeeGames.xcdatamodel; sourceTree = "<group>"; };
 		B5F5E7A92B06C5E900FD9C17 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		B5F5E7AB2B06C6A900FD9C17 /* DataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManager.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 		B53635702B05531C0064713E /* Screens */ = {
 			isa = PBXGroup;
 			children = (
+				B5BC91A52B0D45C900B94095 /* LuckyGameView.swift */,
 				B5930E9E2B029B6100265CBE /* HomeView.swift */,
 				B5930EB22B03D96500265CBE /* GameDetailsView.swift */,
 				B53635732B0571790064713E /* GenresView.swift */,
@@ -282,6 +285,7 @@
 				B5F5E7A82B06C3E400FD9C17 /* GeeGames.xcdatamodeld in Sources */,
 				B5930EAB2B029D9200265CBE /* ListModel.swift in Sources */,
 				B5930E9F2B029B6100265CBE /* HomeView.swift in Sources */,
+				B5BC91A62B0D45C900B94095 /* LuckyGameView.swift in Sources */,
 				B53635742B0571790064713E /* GenresView.swift in Sources */,
 				B5930E9D2B029B6100265CBE /* GeeGamesApp.swift in Sources */,
 				B5BC91A42B0D14ED00B94095 /* SettingsView.swift in Sources */,

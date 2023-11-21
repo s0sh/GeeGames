@@ -25,13 +25,12 @@ struct HomeView: View {
     
     let onCommit: (() -> Void)?
     
+    @EnvironmentObject var viewModel: GamesListViewModel
     
     @State private var searchText: String = ""
     @State private var dataDidLoad: Bool = false
     @State var gameObjects: [Game] = []
     @State var isPrev: Bool?
-    
-    @StateObject private var viewModel = GamesListViewModel()
     
     var body: some View {
         
@@ -112,7 +111,7 @@ struct HomeView: View {
                                         .foregroundColor(.white)
                                         .cornerRadius(14)
                                 }
-                            }
+                            }.frame(maxWidth: .infinity, maxHeight: 60)
                         }
                     }
                     .listStyle(GroupedListStyle())

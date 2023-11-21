@@ -42,6 +42,8 @@ enum MenuItems: Int, CaseIterable{
 
 struct MenuView: View {
     
+    @EnvironmentObject var viewModel: GamesListViewModel
+    
     @State var selectedTab = 0
     let systemImage = Image(systemName: "gear")
     
@@ -53,7 +55,7 @@ struct MenuView: View {
                         .tag(0)
                     FavoriteView()
                         .tag(1)
-                    GenresView()
+                    LuckyGameView().environmentObject(viewModel)
                         .tag(2)
                     SettingsView()
                         .tag(3)
@@ -83,7 +85,6 @@ struct MenuView: View {
                 .shadow(radius: 25, x: 3, y: 3)
             }
     }
-
 }
 
 extension MenuView{

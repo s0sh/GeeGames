@@ -19,12 +19,12 @@ struct MenuItemView: View {
                 .foregroundColor(.yellow)
                 .padding([.leading, .trailing])
             if title.contains("Contact") {
-                Text("[Contact Us](mailto:apple@apple.com)")
+                Text("[Contact Us](mailto:sample@sample.com)")
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.white)
                     .tint(.white)
             } else if title.contains("Privacy") {
-                Text("[Privacy](http://apple.com)")
+                Text("[Privacy](http://example.com)")
                     .font(.system(size: 20, weight: .semibold))
                     .foregroundColor(.white)
                     .tint(.white)
@@ -45,7 +45,7 @@ struct MenuItemView: View {
 }
 
 struct SettingsView: View {
-   
+    @State private var showingAlert = false
     var body: some View {
         SwiftUI.Color.black.overlay (
             VStack {
@@ -56,13 +56,15 @@ struct SettingsView: View {
                     }
                 MenuItemView(title: "Contact Us", imageName: "mail")
                     .padding(.bottom)
-                    .onTapGesture {
-                        
-                    }
                 MenuItemView(title: "Privacy", imageName: "doc")
                     .padding(.bottom)
                 MenuItemView(title: "Share the App", imageName: "square.and.arrow.up")
                     .padding(.bottom)
+                    .onTapGesture {
+                        showingAlert = true
+                    }.alert("Comming soon...", isPresented: $showingAlert) {
+                        Button("OK", role: .cancel) { }
+                    }
             }
             
         ).ignoresSafeArea()

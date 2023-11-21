@@ -47,8 +47,8 @@ struct StartScreen: View {
                                 Text("Start now")
                                     .font(.system(size: 20, weight: .bold))
                                     .frame(width: 320, height: 60)
-                                    .background(SwiftUI.Color.white)
-                                    .foregroundColor(.accentColor)
+                                    .background(SwiftUI.Color.blue)
+                                    .foregroundColor(.white)
                                     .cornerRadius(18)
                             })
                         }

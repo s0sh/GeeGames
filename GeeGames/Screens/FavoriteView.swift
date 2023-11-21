@@ -15,14 +15,16 @@ struct FavoriteView: View {
     @State var message: String = ""
     
     var body: some View {
-        
+       
         NavigationView {
             
             if favorites.count == 0 {
+                SwiftUI.Color.black.overlay(
                 Text("It is nothing here!!!")
                     .font(.system(size: 22, weight: .black))
                     .foregroundColor(.blue)
                     .shadow(color: .blue, radius: 8)
+                ).ignoresSafeArea()
             } else {
                 
                 List {
@@ -67,6 +69,7 @@ struct FavoriteView: View {
                 }.messageView(text: $message)
             }
         }.tint(.blue)
+        
     }
 }
 
