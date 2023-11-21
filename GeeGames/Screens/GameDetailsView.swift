@@ -25,13 +25,14 @@ struct GameDetailsView: View {
     @State var gamesInfo: GameDetails?
     
     var isGenre = false
-    
+    var isFavorites = false
     var gameId = 0
     
     @State var showImage = false
     
     @Environment(\.managedObjectContext) var moc
     @FetchRequest(sortDescriptors: []) private var favorites: FetchedResults<Favorites>
+    
     @State var dataManager: DataManager?
     
     var body: some View {
@@ -100,60 +101,64 @@ struct GameDetailsView: View {
                         
                         var object = HTMLExample(html: description)
                         Text(object.attributedHtml.string)
-                           
+                        
                     }
                 }
                 if isGenre == false {
                     if let platforms = game?.platforms  {
                         
                         //ForEach(platforms) { #Crash in loop here
-                                if let req = platforms[0].requirementsEn {
-                                    Text("Minimum requirements for: \(platforms[0].platform.name)")
-                                        .font(.system(size: 22, weight: .semibold))
-                                        .foregroundColor(.white)
-                                        .shadow(color: .white, radius: Settings.shadowRadius, x: 1, y: 1)
-                                        .padding(20)
-                                    
-                                        //TestHTMLText(html: req.minimum)
-                                        Text("\(HTMLExample(html: req.minimum).attributedHtml.string)")
-                                }
-                            }
-               //        }
+                        if let req = platforms[0].requirementsEn {
+                            Text("Minimum requirements for: \(platforms[0].platform.name)")
+                                .font(.system(size: 22, weight: .semibold))
+                                .foregroundColor(.white)
+                                .shadow(color: .white, radius: Settings.shadowRadius, x: 1, y: 1)
+                                .padding(20)
+                            
+                            //TestHTMLText(html: req.minimum)
+                            Text("\(HTMLExample(html: req.minimum).attributedHtml.string)")
+                        }
+                    }
+                    //        }
                     
                 }
             }
             // MARK: - Add to favorites button [Navigation]
             .navigationBarItems(trailing: Button(action: {
-                
-                if let dataManager = self.dataManager {
-                    if let url = URL(string: gamesInfo?.backgroundImage ?? "") {
-                        try? dataManager.add(imageData: Data(contentsOf: url),
-                                             id: gamesInfo?.id ?? 0,
-                                             name: gamesInfo?.name ?? "")
-                        messageText = "Added successfully!"
+                if isFavorites == false {
+                    if let dataManager = self.dataManager {
+                        if let url = URL(string: gamesInfo?.backgroundImage ?? "") {
+                            try? dataManager.add(imageData: Data(contentsOf: url),
+                                                 id: gamesInfo?.id ?? 0,
+                                                 name: gamesInfo?.name ?? "")
+                            messageText = "Added successfully!"
+                        }
                     }
+                } else {
+                    messageText = "Already in the list!"
                 }
                 
             }, label: {
                 HStack { Image(systemName: "heart")
                         .frame(width: 30, height: 30)
                         .font(.system(size: 20, weight: .medium))
-                        .foregroundColor(.red)
+                        .foregroundColor(favorites.filter { $0.id == gameId }.count > 0 ? .blue : .red)
                         .alignmentGuide(.bottom) {
                             $0[.top]
                         }
                 }
             }).messageView(text: $messageText)
             )
-
+            
+            
         }.background { SwiftUI.Color("AccentColor").ignoresSafeArea() }
-         .accentColor(.white)
-        .offset(y: -30)
-        .task {
-            viewModel.id = gameId != 0 ? gameId : game!.id
-            await viewModel.loadInfo()
-            gamesInfo = viewModel.gamesInfo
-            dataManager = DataManager(moc: moc, favorites: favorites)
-        }
+            .accentColor(.white)
+            .offset(y: isFavorites == false ? -30 : 30)
+            .task {
+                viewModel.id = gameId != 0 ? gameId : game!.id
+                await viewModel.loadInfo()
+                gamesInfo = viewModel.gamesInfo
+                dataManager = DataManager(moc: moc, favorites: favorites)
+            }
     }
 }
