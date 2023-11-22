@@ -64,8 +64,11 @@ class ImageViewModel: ObservableObject {
 struct ImageView: View {
     @ObservedObject private var imageViewModel: ImageViewModel
     
-    init(urlString: String?) {
+    var contentMode: ContentMode = .fit
+    
+    init(urlString: String?, contentMode: ContentMode = .fill) {
         imageViewModel = ImageViewModel(urlString: urlString)
+        self.contentMode = contentMode
     }
     
     var body: some View {
@@ -74,7 +77,7 @@ struct ImageView: View {
             Image(uiImage: imageViewModel.image ?? UIImage())
                 .resizable()
             //  .frame(minHeight: 350)
-                .aspectRatio(contentMode: .fill)
+                .aspectRatio(contentMode: contentMode)
         }
     }
 }
